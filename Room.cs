@@ -23,32 +23,36 @@ public class Room
         return this.name;
     }
 
-  public void tryToTakeExit(string direction)
+public void tryToTakeExit(string direction)
 {
-    for (int i = 0; i < this.currNumberOfExits; i++)
+    if (this.hasExit(direction))
     {
-        if (String.Equals(this.availableExits[i].getDirection(), direction))
+        // Find the exit that matches the direction
+        for (int i = 0; i < this.currNumberOfExits; i++)
         {
-            Room destinationRoom = this.availableExits[i].getDestination();
-            Debug.Log($"Moving to {destinationRoom.getName()}.");
-
-            // Remove player from the current room
-            this.thePlayer.setCurrentRoom(null);
-
-            // Move player to the new room
-            destinationRoom.setPlayer(this.thePlayer);
-
-            // Update the room visuals
-            RoomManager roomManager = GameObject.FindObjectOfType<RoomManager>();
-            if (roomManager != null)
+            if (String.Equals(this.availableExits[i].getDirection(), direction))
             {
-                roomManager.setupRoom(); // Refresh door visibility
+                // Get the destination room from the exit
+                Room destinationRoom = this.availableExits[i].getDestination();
+
+                // Remove the player from the current room
+                this.thePlayer.setCurrentRoom(null);
+
+                // Place the player in the destination room
+                destinationRoom.setPlayer(this.thePlayer);
+
+                // Update the player's current room reference
+                this.thePlayer.setCurrentRoom(destinationRoom);
+
+                Debug.Log($"Player moved to {destinationRoom.getName()}");
+                return;
             }
-            return; // Exit method after successful movement
         }
     }
-
-    Debug.Log("No Exit In This Direction");
+    else
+    {
+        Debug.Log("No Exit In This Direction!");
+    }
 }
 
     public bool hasExit(string direction)

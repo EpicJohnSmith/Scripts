@@ -31,28 +31,33 @@ public class RoomManager : MonoBehaviour
         this.theDoors[2].SetActive(currentRoom.hasExit("east"));
         this.theDoors[3].SetActive(currentRoom.hasExit("west"));
     }
-
+}
     // Update is called once per frame
-    void Update()
-    if (Core.thePlayer != null && Core.thePlayer.getCurrentRoom() != null)
+    // This should be in a MonoBehaviour script attached to your Player GameObject
+void Update()
+{
+    if(Input.GetKeyDown(KeyCode.UpArrow))
     {
-        Room currentRoom = Core.thePlayer.getCurrentRoom();
+        TryMovePlayer("north");
+    }
+    else if(Input.GetKeyDown(KeyCode.LeftArrow))
+    {
+        TryMovePlayer("west");
+    }
+    else if(Input.GetKeyDown(KeyCode.RightArrow))
+    {
+        TryMovePlayer("east");
+    }
+    else if(Input.GetKeyDown(KeyCode.DownArrow))
+    {
+        TryMovePlayer("south");
+    }
+}
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            currentRoom.tryToTakeExit("north");
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            currentRoom.tryToTakeExit("west");
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            currentRoom.tryToTakeExit("east");
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            currentRoom.tryToTakeExit("south");
-        }
+private void TryMovePlayer(string direction)
+{
+    if (this.thePlayer != null && this.thePlayer.GetCurrentRoom() != null)
+    {
+        this.thePlayer.GetCurrentRoom().tryToTakeExit(direction);
     }
 }
