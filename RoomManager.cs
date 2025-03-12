@@ -5,7 +5,6 @@ public class RoomManager : MonoBehaviour
     public GameObject[] theDoors;
     private Dungeon theDungeon;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Core.thePlayer = new Player("Julian");
@@ -13,51 +12,52 @@ public class RoomManager : MonoBehaviour
         this.setupRoom();
     }
 
-    //disable all doors
     private void resetRoom()
     {
-        this.theDoors[0].SetActive(false);
-        this.theDoors[1].SetActive(false);
-        this.theDoors[2].SetActive(false);
-        this.theDoors[3].SetActive(false);
+        for (int i = 0; i < theDoors.Length; i++)
+        {
+            theDoors[i].SetActive(false);
+        }
     }
 
-    //show the doors appropriate to the current room
     private void setupRoom()
     {
         Room currentRoom = Core.thePlayer.getCurrentRoom();
-        this.theDoors[0].SetActive(currentRoom.hasExit("north"));
-        this.theDoors[1].SetActive(currentRoom.hasExit("south"));
-        this.theDoors[2].SetActive(currentRoom.hasExit("east"));
-        this.theDoors[3].SetActive(currentRoom.hasExit("west"));
+        if (currentRoom != null)
+        {
+            theDoors[0].SetActive(currentRoom.hasExit("north"));
+            theDoors[1].SetActive(currentRoom.hasExit("south"));
+            theDoors[2].SetActive(currentRoom.hasExit("east"));
+            theDoors[3].SetActive(currentRoom.hasExit("west"));
+        }
     }
-}
-    // Update is called once per frame
-    // This should be in a MonoBehaviour script attached to your Player GameObject
-void Update()
-{
-    if(Input.GetKeyDown(KeyCode.UpArrow))
-    {
-        TryMovePlayer("north");
-    }
-    else if(Input.GetKeyDown(KeyCode.LeftArrow))
-    {
-        TryMovePlayer("west");
-    }
-    else if(Input.GetKeyDown(KeyCode.RightArrow))
-    {
-        TryMovePlayer("east");
-    }
-    else if(Input.GetKeyDown(KeyCode.DownArrow))
-    {
-        TryMovePlayer("south");
-    }
-}
 
-private void TryMovePlayer(string direction)
-{
-    if (this.thePlayer != null && this.thePlayer.GetCurrentRoom() != null)
+    void Update()
     {
-        this.thePlayer.GetCurrentRoom().tryToTakeExit(direction);
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            TryMovePlayer("north");
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            TryMovePlayer("west");
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            TryMovePlayer("east");
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            TryMovePlayer("south");
+        }
+    }
+
+    private void TryMovePlayer(string direction)
+    {
+        if (Core.thePlayer != null && Core.thePlayer.getCurrentRoom() != null)
+        {
+            Core.thePlayer.getCurrentRoom().tryToTakeExit(direction);
+            setupRoom(); // Update room visuals after movement
+        }
     }
 }
