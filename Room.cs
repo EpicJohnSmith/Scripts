@@ -23,37 +23,42 @@ public class Room
         return this.name;
     }
 
-public void tryToTakeExit(string direction)
-{
-    if (this.hasExit(direction))
+    public bool tryToTakeExit(string direction)
     {
-        // Find the exit that matches the direction
-        for (int i = 0; i < this.currNumberOfExits; i++)
+        Exit theExit = this.getExit(direction);
+        if(theExit != null)
         {
-            if (String.Equals(this.availableExits[i].getDirection(), direction))
-            {
-                // Get the destination room from the exit
-                Room destinationRoom = this.availableExits[i].getDestination();
+            //remove the player from the current room
+            Core.thePlayer.getCurrentRoom().removePlayer();
 
-                // Remove the player from the current room
-                this.thePlayer.setCurrentRoom(null);
-
-                // Place the player in the destination room
-                destinationRoom.setPlayer(this.thePlayer);
-
-                // Update the player's current room reference
-                this.thePlayer.setCurrentRoom(destinationRoom);
-
-                Debug.Log($"Player moved to {destinationRoom.getName()}");
-                return;
-            }
+            //place them in the destination room in that direction
+            Room destinationRoom = theExit.getDestination();
+            destinationRoom.setPlayer(Core.thePlayer);
+            
+            //update the room the player is currently in so the room exits visually update
+            return true;
+        }
+        else
+        {
+            Debug.Log("No Exit In This Direction");
+            return false;
         }
     }
-    else
+
+    public Exit getExit(string direction)
     {
-        Debug.Log("No Exit In This Direction!");
+        if(this.hasExit(direction))
+        {
+            for(int i = 0; i < this.currNumberOfExits; i++)
+            {
+                if(String.Equals(this.availableExits[i].getDirection(), direction))
+                {
+                    return this.availableExits[i];
+                }
+            }
+        }
+        return null;
     }
-}
 
     public bool hasExit(string direction)
     {
@@ -66,6 +71,12 @@ public void tryToTakeExit(string direction)
         }
         return false;
     }
+
+    public void removePlayer()
+    {
+        this.thePlayer = null;
+    }
+
     public void setPlayer(Player p)
     {
         this.thePlayer = p;
