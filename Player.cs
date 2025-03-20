@@ -1,13 +1,12 @@
 using UnityEngine;
 
-public class Player
+public class Player : Inhabitant
 {
-    private string name;
+
     private Room currentRoom;
 
-    public Player(string name)
+    public Player(string name) : base(name)
     {
-        this.name = name;
         this.currentRoom = null;
     }
 

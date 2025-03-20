@@ -10,14 +10,26 @@ public class Room
     private Exit[] availableExits = new Exit[4];
     private int currNumberOfExits = 0;
 
+    private bool hasPlayerBeenHere;
+
     private string name;
 
     public Room(string name)
     {
         this.name = name;
         this.thePlayer = null;
+        this.hasPlayerBeenHere = false;
     }
 
+    public bool getHasPlayerBeenHere()
+    {
+        return this.hasPlayerBeenHere;
+    }
+
+    public Player getPlayer()
+    {
+        return this.thePlayer;
+}
     public string getName()
     {
         return this.name;
@@ -45,7 +57,7 @@ public class Room
         }
     }
 
-    public Exit getExit(string direction)
+    private Exit getExit(string direction)
     {
         if(this.hasExit(direction))
         {
@@ -75,6 +87,7 @@ public class Room
     public void removePlayer()
     {
         this.thePlayer = null;
+        this.hasPlayerBeenHere = true;
     }
 
     public void setPlayer(Player p)
