@@ -7,40 +7,34 @@ public class Fight
 
     public Fight()
     {
-        Player player = new Player("Hero");
-        Monster monster = new Monster("Goblin");
-
-        int roll = Random.Range(1, 21);
+        int roll = Random.Range(0, 20) + 1;
         if (roll <= 10)
         {
             Debug.Log("Monster goes first");
-            attacker = monster;
-            defender = player;
         }
         else
         {
             Debug.Log("Player goes first");
-            attacker = player;
-            defender = monster;
         }
+
     }
 
     public void startFight()
+{
+    while (attacker.IsAlive() && defender.IsAlive())
     {
-        while (attacker.IsAlive() && defender.IsAlive())
+        attacker.Attack(defender);
+
+        if (!defender.IsAlive())
         {
-            attacker.Attack(defender);
-
-            if (!defender.IsAlive())
-            {
-                Debug.Log($"{defender.Name} has died. {attacker.Name} wins!");
-                break;
-            }
-
-            // Swap roles for the next round
-            Inhabitant temp = attacker;
-            attacker = defender;
-            defender = temp;
+            Debug.Log($"{defender.Name} has died. {attacker.Name} wins!");
+            break;
         }
+
+        // Swap roles for the next round
+        Inhabitant temp = attacker;
+        attacker = defender;
+        defender = temp;
     }
+}
 }
