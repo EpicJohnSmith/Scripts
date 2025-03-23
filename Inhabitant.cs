@@ -34,4 +34,16 @@ public abstract class Inhabitant
     {
         return this.ac;
     }
+
+    // Add a public method to access the current HP
+    public int getCurrentHP()
+    {
+        return this.currHp;
+    }
+    
+    // Add a method to get max HP if needed
+    public int getMaxHP()
+    {
+        return UnityEngine.Random.Range(30, 50);
+    }
 }
