@@ -1,4 +1,3 @@
-// Inhabitant.cs
 using UnityEngine;
 
 public abstract class Inhabitant
@@ -8,9 +7,6 @@ public abstract class Inhabitant
     protected int ac;
     protected string name;
 
-    // Add property for Name to make it accessible
-    public string Name { get { return name; } }
-
     public Inhabitant(string name)
     {
         this.name = name;
@@ -19,40 +15,23 @@ public abstract class Inhabitant
         this.ac = Random.Range(10, 20);
     }
 
-    // Add IsAlive method
-    public bool IsAlive()
+    public string getName()
     {
-        return currHp > 0;
+        return this.name;
     }
 
-    // Add Attack method
-    public virtual void Attack(Inhabitant target)
+    public bool isDead()
     {
-        // Calculate hit chance based on a d20 roll
-        int attackRoll = Random.Range(1, 21);
-        
-        // If roll is greater than or equal to target's AC, the attack hits
-        if (attackRoll >= target.ac)
-        {
-            // Calculate damage between 5-10
-            int damage = Random.Range(5, 11);
-            target.currHp -= damage;
-            
-            // Make sure HP doesn't go below 0
-            if (target.currHp < 0)
-                target.currHp = 0;
-                
-            Debug.Log($"{Name} hits {target.Name} for {damage} damage! {target.Name} has {target.currHp} HP left.");
-        }
-        else
-        {
-            Debug.Log($"{Name} misses {target.Name}!");
-        }
+        return this.currHp <= 0;
     }
-    
-    // Add a method to get AC if needed for extensibility
-    public int GetAC()
+
+    public void takeDamage(int damage)
     {
-        return ac;
+        this.currHp -= damage;
+    }
+
+    public int getAC()
+    {
+        return this.ac;
     }
 }

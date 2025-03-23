@@ -1,4 +1,5 @@
 using UnityEngine;
+
 public class Dungeon
 {
     public Dungeon()
@@ -9,6 +10,7 @@ public class Dungeon
 	    Room r4 = new Room("R4");
 	    Room r5 = new Room("R5");
 	    Room r6 = new Room("R6");
+
         r1.addExit("north", r2);
 	    r2.addExit("north", r3);
 	    r2.addExit("south", r1);

@@ -1,16 +1,19 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+public class Monster : Inhabitant
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public Monster(string name) : base(name)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public int getCurrHP()
     {
-        
+        return this.currHp;
+    }
+
+    public string getName()
+    {
+        return this.name;
     }
 }

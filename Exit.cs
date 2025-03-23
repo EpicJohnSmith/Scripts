@@ -13,13 +13,11 @@ public class Exit
         this.destination = destination;
     }
 
-    // Getter for the direction
     public string getDirection()
     {
         return this.direction;
     }
 
-    // Getter for the destination room
     public Room getDestination()
     {
         return this.destination;
