@@ -64,6 +64,7 @@ public class Fight
         if (waitingForPlayerAction)
         {
             sceneManager.ShowPlayerActionUI(true);
+            sceneManager.UpdateAttackTypeUI("Normal Attack");
         }
     }
     
@@ -91,6 +92,10 @@ public class Fight
             // Now it's player's turn
             waitingForPlayerAction = true;
             sceneManager.ShowPlayerActionUI(true);
+            
+            // Reset the attack type UI for next turn
+            currentPlayerAttackType = AttackType.Normal;
+            sceneManager.UpdateAttackTypeUI("Normal Attack");
         }
     }
     
@@ -99,21 +104,21 @@ public class Fight
         if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
         {
             currentPlayerAttackType = AttackType.Power;
-            Debug.Log(attacker.getName() + "selected Power Attack");
+            Debug.Log("Julian selected Power Attack");
             sceneManager.UpdateAttackTypeUI("Power Attack");
             ExecutePlayerAction();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
         {
             currentPlayerAttackType = AttackType.Normal;
-            Debug.Log(attacker.getName() + "selected Normal Attack");
+            Debug.Log("Julian selected Normal Attack");
             sceneManager.UpdateAttackTypeUI("Normal Attack");
             ExecutePlayerAction();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
         {
             currentPlayerAttackType = AttackType.Potion;
-            Debug.Log(attacker.getName() + "selected Healing Potion");
+            Debug.Log("Julian + selected Healing Potion");
             sceneManager.UpdateAttackTypeUI("Healing Potion");
             ExecutePlayerAction();
         }
@@ -145,9 +150,8 @@ public class Fight
         // Reset the timer for monster's next attack
         timeSinceLastAttack = 0f;
         
-        // Reset the attack type for next turn
-        currentPlayerAttackType = AttackType.Normal;
-        sceneManager.UpdateAttackTypeUI("Normal Attack");
+        // DON'T reset the attack type here - we'll reset it when the monster's turn is over
+        // and the player gets their next turn
     }
     
     private void ExecutePlayerAttack()

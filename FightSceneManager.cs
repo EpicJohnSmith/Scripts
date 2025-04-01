@@ -15,7 +15,7 @@ public class FightSceneManager : MonoBehaviour
     public Slider monsterHealthBar;
     
     // New UI for attack type
-    public TextMeshProUGUI attackTypeText;
+    public TextMeshProUGUI attackTypeText;  // This field might not be assigned in the Inspector
     public TextMeshProUGUI actionPromptText;
     public GameObject playerActionPanel; // Parent GameObject for all player action UI elements
     
@@ -81,6 +81,12 @@ public class FightSceneManager : MonoBehaviour
             
         // Make sure player action UI is initially hidden
         ShowPlayerActionUI(false);
+        
+        // DEBUG: Validate that attackTypeText is assigned
+        if (attackTypeText == null)
+        {
+            Debug.LogError("attackTypeText is not assigned in the Inspector! Please assign it.");
+        }
     }
     
     public void UpdateHealthUI(int playerHP, int monsterHP)
@@ -109,6 +115,10 @@ public class FightSceneManager : MonoBehaviour
         {
             attackTypeText.text = $"Player's Turn: {attackType}";
         }
+        else
+        {
+            Debug.LogError("Cannot update attack type UI: attackTypeText is null!");
+        }
     }
     
     public void ShowPlayerActionUI(bool show)
@@ -118,6 +128,10 @@ public class FightSceneManager : MonoBehaviour
         {
             playerActionPanel.SetActive(show);
         }
+        else
+        {
+            Debug.LogWarning("playerActionPanel is not assigned!");
+        }
         
         // Show/hide individual UI elements if you don't have a panel
         if (actionPromptText != null)
@@ -125,8 +139,18 @@ public class FightSceneManager : MonoBehaviour
             actionPromptText.gameObject.SetActive(show);
             if (show)
             {
-                actionPromptText.text = "What is your action? [1] Power Attack  [2] Normal Attack  [3] Healing Potion";
+                actionPromptText.text = "What is your action?     [1] Power Attack           [2] Normal Attack          [3] Healing Potion";
             }
+        }
+        else
+        {
+            Debug.LogWarning("actionPromptText is not assigned!");
+        }
+        
+        // Make sure the attack type text remains visible during player's turn
+        if (attackTypeText != null && show)
+        {
+            attackTypeText.gameObject.SetActive(true);
         }
         
         if (show)
