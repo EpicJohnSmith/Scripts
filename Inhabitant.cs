@@ -41,9 +41,10 @@ public abstract class Inhabitant
         return this.currHp;
     }
     
-    // Add a method to get max HP if needed
+    // Fixed the getMaxHP method to return the actual maxHp field
+    // instead of generating a new random value each time
     public int getMaxHP()
     {
-        return UnityEngine.Random.Range(30, 50);
+        return this.maxHp;
     }
 }

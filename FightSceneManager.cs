@@ -14,6 +14,11 @@ public class FightSceneManager : MonoBehaviour
     public Slider playerHealthBar;
     public Slider monsterHealthBar;
     
+    // New UI for attack type
+    public TextMeshProUGUI attackTypeText;
+    public TextMeshProUGUI actionPromptText;
+    public GameObject playerActionPanel; // Parent GameObject for all player action UI elements
+    
     // Default values - adjust these to match your game design
     private int playerMaxHealth = 20; 
     private int monsterMaxHealth = 15;
@@ -47,6 +52,9 @@ public class FightSceneManager : MonoBehaviour
         // Create and start the fight
         currentFight = new Fight(theMonster, this);
         currentFight.startFight(player, monster);
+        
+        // Initialize attack type UI
+        UpdateAttackTypeUI("Normal Attack");
     }
     
     private void SetupUI()
@@ -70,6 +78,9 @@ public class FightSceneManager : MonoBehaviour
         
         if (monsterHealthText != null)
             monsterHealthText.text = $"{theMonster.getName()}: {monsterMaxHealth}/{monsterMaxHealth} HP";
+            
+        // Make sure player action UI is initially hidden
+        ShowPlayerActionUI(false);
     }
     
     public void UpdateHealthUI(int playerHP, int monsterHP)
@@ -92,6 +103,42 @@ public class FightSceneManager : MonoBehaviour
         Debug.Log($"Updating UI - Player HP: {playerHP}/{playerMaxHealth}, Monster HP: {monsterHP}/{monsterMaxHealth}");
     }
     
+    public void UpdateAttackTypeUI(string attackType)
+    {
+        if (attackTypeText != null)
+        {
+            attackTypeText.text = $"Player's Turn: {attackType}";
+        }
+    }
+    
+    public void ShowPlayerActionUI(bool show)
+    {
+        // Show/hide the player action panel
+        if (playerActionPanel != null)
+        {
+            playerActionPanel.SetActive(show);
+        }
+        
+        // Show/hide individual UI elements if you don't have a panel
+        if (actionPromptText != null)
+        {
+            actionPromptText.gameObject.SetActive(show);
+            if (show)
+            {
+                actionPromptText.text = "What is your action? [1] Power Attack  [2] Normal Attack  [3] Healing Potion";
+            }
+        }
+        
+        if (show)
+        {
+            Debug.Log("Player's turn - waiting for action selection");
+        }
+        else
+        {
+            Debug.Log("Monster's turn");
+        }
+    }
+    
     public void FightStarted(Fight fight)
     {
         currentFight = fight;
@@ -101,6 +148,11 @@ public class FightSceneManager : MonoBehaviour
     public void FightEnded()
     {
         fightActive = false;
+        if (actionPromptText != null)
+        {
+            actionPromptText.text = "Fight Ended";
+            actionPromptText.gameObject.SetActive(true);
+        }
     }
     
     void Update()
